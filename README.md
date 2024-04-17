@@ -9,14 +9,15 @@
 ### Neovim:
 * Since it's better to build/install neovim locally, follow [instructions](https://github.com/neovim/neovim/blob/master/BUILD.md)
 
-### Python
+### Python (part of setup.sh script)
 * Install nvm (so that the newest version of node js could be install)
-* Using nvm install latest node js
+  * Follow steps [here](https://www.geeksforgeeks.org/how-to-install-nvm-on-ubuntu-22-04/) 
+* Using nvm install latest NodeJS
 * remove .local/share/nvim and run nvim again letting LazyVim populate it again now based on the latest NodeJS version
-* Now you can open python file and the LSP will work
-* When you open a python file, you can press F5 to activate the python REPL in slime and then press C-c C-c to evaluate the code (chose defaults to connect to the REPL)
 
-### [lf file manager](https://github.com/gokcehan/lf)
+### [lf file manager](https://github.com/gokcehan/lf) (part of setup.script)
 * Download the [latest binaries](https://github.com/gokcehan/lf/releases/download/r32/lf-linux-amd64.tar.gz) from the [releases](https://github.com/gokcehan/lf/releases) and put the lf under /usr/local/bin folder
 
-
+### Conjure
+* The development in Python (and other languages) is based on [Conjure](https://github.com/Olical/conjure) 
+* This added as a neovim plugin
