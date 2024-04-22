@@ -21,3 +21,23 @@
 ### Conjure
 * The development in Python (and other languages) is based on [Conjure](https://github.com/Olical/conjure) 
 * This added as a neovim plugin
+
+### Installig java
+* `sudo apt-get install openjdk-11-jdk` (for Sailpoint IIQ)
+* `sudo apt-get install openjdk-21-jdk` (for Fernflower and everyting else)
+* use `sudo update-alternatives --config java` to switch versions
+
+### Getting Fernflower (java decompiler) to work [from this page](https://www.jetbrains.com/intellij-repository/releases/) and search java-decompiler-engine.jar
+* cd 
+* `wget https://www.jetbrains.com/intellij-repository/releases/com/jetbrains/intellij/java/java-decompiler-engine/241.14494.240/java-decompiler-engine-241.14494.240.jar`
+* `mv java-decompiler-engine* java-decompiler-engine.jar`
+* cd to your java project with jar or war files
+* mkdir decompiled_java
+* `java -jar ~/java-decompiler-engine.jar -hes=0 -hdc=0 ./src ./decompiled_java` where ./src is the source of you jar files
+* `cd decompiled_java`
+* Unzip jar files `find . -name '*.jar' -exec sh -c 'unzip -d "${1%.*}" "$1"' _ {} \;`
+
+
+
+
+
