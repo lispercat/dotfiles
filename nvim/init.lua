@@ -27,3 +27,5 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
   once = true,
 })
+--require("java").setup()
+--require("lspconfig").jdtls.setup({})

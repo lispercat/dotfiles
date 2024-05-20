@@ -83,10 +83,7 @@ return {
   },
   {
     "nvim-java/nvim-java",
-    config = function()
-      require("java").setup()
-      require("lspconfig").jdtls.setup({})
-    end,
+    config = function() end,
     dependencies = {
       "nvim-java/lua-async-await",
       "nvim-java/nvim-java-core",
