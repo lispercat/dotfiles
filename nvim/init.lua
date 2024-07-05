@@ -1,5 +1,6 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
+vim.cmd("set modifiable")
 --Write file to disk upon change
 vim.api.nvim_create_autocmd({
   "InsertLeave",
