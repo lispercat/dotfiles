@@ -28,5 +28,25 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
   once = true,
 })
---require("java").setup()
---require("lspconfig").jdtls.setup({})
+
+--Functions to copy from ssh terminal to windows clipboard
+local function copy(lines, _)
+  require("osc52").copy(table.concat(lines, "\n"))
+end
+
+local function paste()
+  return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
+end
+
+vim.g.clipboard = {
+  name = "osc52",
+  copy = { ["+"] = copy, ["*"] = copy },
+  paste = { ["+"] = paste, ["*"] = paste },
+}
+
+vim.keymap.set("n", "<leader>c", '"+y')
+vim.keymap.set("n", "<leader>cc", '"+yy')
+vim.keymap.set("v", "<leader>c", '"+y')
+-- Remap yanking to always go to osc52 buffer
+vim.keymap.set("n", "y", '"+y')
+vim.keymap.set("v", "y", '"+y')
