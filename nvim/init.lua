@@ -45,8 +45,4 @@ vim.g.clipboard = {
 }
 
 vim.keymap.set("n", "<leader>c", '"+y')
-vim.keymap.set("n", "<leader>cc", '"+yy')
 vim.keymap.set("v", "<leader>c", '"+y')
--- Remap yanking to always go to osc52 buffer
-vim.keymap.set("n", "y", '"+y')
-vim.keymap.set("v", "y", '"+y')
