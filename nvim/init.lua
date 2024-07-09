@@ -14,7 +14,6 @@ vim.api.nvim_create_autocmd({
 })
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true })
 vim.opt.fileformat = "unix"
-vim.opt.clipboard = "unnamedplus"
 vim.opt.ignorecase = true
 vim.api.nvim_create_autocmd("VimEnter", {
   desc = "Auto select virtualenv Nvim open",
@@ -30,6 +29,8 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 --Functions to copy from ssh terminal to windows clipboard
+-- the unnamedplus setting is paramount for osc52 integration to work, since it says to the system that ally copy/paste that we go go to + register
+vim.opt.clipboard = "unnamedplus"
 local function copy(lines, _)
   require("osc52").copy(table.concat(lines, "\n"))
 end
