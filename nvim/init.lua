@@ -1,5 +1,6 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
+
 vim.cmd("set modifiable")
 --Write file to disk upon change
 vim.api.nvim_create_autocmd({
@@ -13,7 +14,7 @@ vim.api.nvim_create_autocmd({
   nested = true,
 })
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true })
-vim.opt.fileformat = "unix"
+-- vim.opt.fileformat = "unix"
 vim.opt.ignorecase = true
 vim.api.nvim_create_autocmd("VimEnter", {
   desc = "Auto select virtualenv Nvim open",
@@ -27,23 +28,31 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
   once = true,
 })
-
 --Functions to copy from ssh terminal to windows clipboard
 -- the unnamedplus setting is paramount for osc52 integration to work, since it says to the system that ally copy/paste that we go go to + register
-vim.opt.clipboard = "unnamedplus"
-local function copy(lines, _)
-  require("osc52").copy(table.concat(lines, "\n"))
-end
+-- Set clipboard to use system clipboard
+-- vim.opt.clipboard = "unnamedplus"
 
-local function paste()
-  return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
-end
+-- OSC52 Configuration
+-- local function copy(lines, _)
+--   require("osc52").copy(table.concat(lines, "\n"))
+-- end
+--
+-- local function paste()
+--   return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
+-- end
+--
+-- vim.g.clipboard = {
+--   name = "osc52",
+--   copy = { ["+"] = copy, ["*"] = copy },
+--   paste = { ["+"] = paste, ["*"] = paste },
+-- }
 
-vim.g.clipboard = {
-  name = "osc52",
-  copy = { ["+"] = copy, ["*"] = copy },
-  paste = { ["+"] = paste, ["*"] = paste },
-}
-
-vim.keymap.set("n", "<leader>c", '"+y')
-vim.keymap.set("v", "<leader>c", '"+y')
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    if vim.v.event.operator == "y" then
+      local content = vim.fn.getreg('"')
+      require("osc52").copy(content)
+    end
+  end,
+})
