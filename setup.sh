@@ -4,6 +4,13 @@ ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/nvim ~/.config/
 ln -sf ~/dotfiles/lf ~/.config/
 
+read -p "Do you want to clobber all nvim lazy local libraries (for complete refresh)? (yes/no): " answer
+if [[ $answer =~ ^[Yy](es)?$ ]]; then
+  rm -rf ~/.local/share/nvim
+else
+  echo "Skipping clobbering of nvim lazy libraries"
+fi
+
 #Install nvm and NodeJs and refresh neovim packages
 # Prompt user to install NodeJS
 read -p "Do you want to install the latest NodeJS? (yes/no): " answer
