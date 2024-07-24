@@ -37,6 +37,8 @@
 * `cd decompiled_java`
 * Unzip jar files `find . -name '*.jar' -exec sh -c 'unzip -d "${1%.*}" "$1"' _ {} \;`
 
+### Optionally will install go languages
+* Once go language is installed open nvim and run ":MasonInstall gopls" command so that mason will install gopls language server
 
 
 

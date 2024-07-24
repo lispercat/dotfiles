@@ -28,25 +28,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
   once = true,
 })
---Functions to copy from ssh terminal to windows clipboard
--- the unnamedplus setting is paramount for osc52 integration to work, since it says to the system that ally copy/paste that we go go to + register
--- Set clipboard to use system clipboard
--- vim.opt.clipboard = "unnamedplus"
-
--- OSC52 Configuration
--- local function copy(lines, _)
---   require("osc52").copy(table.concat(lines, "\n"))
--- end
---
--- local function paste()
---   return { vim.fn.split(vim.fn.getreg(""), "\n"), vim.fn.getregtype("") }
--- end
---
--- vim.g.clipboard = {
---   name = "osc52",
---   copy = { ["+"] = copy, ["*"] = copy },
---   paste = { ["+"] = paste, ["*"] = paste },
--- }
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()

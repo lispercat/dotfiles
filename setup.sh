@@ -7,6 +7,7 @@ ln -sf ~/dotfiles/lf ~/.config/
 read -p "Do you want to clobber all nvim lazy local libraries (for complete refresh)? (yes/no): " answer
 if [[ $answer =~ ^[Yy](es)?$ ]]; then
   rm -rf ~/.local/share/nvim
+  rm -rf ~/.local/state/nvim
 else
   echo "Skipping clobbering of nvim lazy libraries"
 fi
@@ -41,6 +42,20 @@ else
   echo "Skipping lf file manager installation."
 fi
 
+# Prompt the user to confirm Go installation
+read -p "Do you want to install Go language? (yes/no): " answer
+if [[ $answer =~ ^[Yy](es)?$ ]]; then
+  # Check if install-go.sh exists and is executable
+  if [ -f "install-go.sh" ] && [ -x "install-go.sh" ]; then
+    echo "Running install-go.sh..."
+    echo "After you run nvim, make sure you run 'MasonInstall gopls' command"
+    ./install-go.sh
+  else
+    echo "install-go.sh not found or not executable. Please ensure the script is in the current directory and has execute permissions."
+  fi
+else
+  echo "Skipping Go installation."
+fi
 #fd is needed for virtual environment selector https://github.com/linux-cultist/venv-selector.nvim
 sudo apt install fd-find
 sudo apt install ripgrep
