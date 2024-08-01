@@ -113,4 +113,9 @@ return {
       -- add any options here
     },
   },
+  {
+    "scottmckendry/cyberdream.nvim",
+    lazy = false,
+    priority = 1000,
+  },
 }

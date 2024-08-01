@@ -1,5 +1,6 @@
 -- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
+vim.cmd("colorscheme cyberdream")
 
 vim.cmd("set modifiable")
 --Write file to disk upon change
