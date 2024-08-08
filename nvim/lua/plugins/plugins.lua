@@ -1,5 +1,6 @@
 return {
-  "jpalardy/vim-slime",
+  { "mhinz/vim-startify" },
+  { "catppuccin/nvim",   name = "catppuccin", priority = 1000 },
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -35,7 +36,7 @@ return {
         -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
         gopls = {},
-        csharp_ls = {},
+        omnisharp = {},
       },
     },
   },
@@ -112,10 +113,5 @@ return {
     opts = {
       -- add any options here
     },
-  },
-  {
-    "scottmckendry/cyberdream.nvim",
-    lazy = false,
-    priority = 1000,
   },
 }
