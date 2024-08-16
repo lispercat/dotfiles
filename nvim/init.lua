@@ -2,6 +2,12 @@
 require("config.lazy")
 vim.cmd.colorscheme("catppuccin-mocha")
 
+-- Set indentation to 2 spaces
+vim.opt.tabstop = 2 -- Number of spaces tabs count for
+vim.opt.shiftwidth = 2 -- Number of spaces to use for each step of (auto)indent
+vim.opt.expandtab = true -- Convert tabs to spaces
+vim.opt.smartindent = true -- Enable smart indentation
+
 vim.cmd("set modifiable")
 --Write file to disk upon change
 vim.api.nvim_create_autocmd({
