@@ -88,6 +88,30 @@ install_go() {
   # Verify the Go installation
   go version
 }
+check_lazygit_installed() {
+  if command -v lazygit &>/dev/null; then
+    echo "lazygit is already installed."
+    return 0
+  else
+    return 1
+  fi
+}
+
+install_lazygit() {
+  echo "Installing lazygit..."
+  # LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+  # curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+  # tar xf lazygit.tar.gz lazygit
+  # sudo install lazygit /usr/local/bin
+  # rm lazygit.tar.gz
+  LAZYGIT_URL=$(curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep browser_download_url | grep Linux_x86_64.tar.gz | cut -d '"' -f 4)
+
+  curl -Lo lazygit.tar.gz $LAZYGIT_URL
+  sudo tar xf lazygit.tar.gz -C /usr/local/bin lazygit
+  rm lazygit.tar.gz
+  rm lazygit
+  echo "lazygit has been installed."
+}
 
 ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/nvim ~/.config/
@@ -99,6 +123,12 @@ if [[ $answer =~ ^[Yy](es)?$ ]]; then
   rm -rf ~/.local/state/nvim
 else
   echo "Skipping clobbering of nvim lazy libraries"
+fi
+
+read -p "Do you want to install lazygit? (yes/no): " answer
+echo
+if [[ $answer =~ ^[Yy](es)?$ ]]; then
+  check_lazygit_installed || install_lazygit
 fi
 
 #Install nvm and NodeJs and refresh neovim packages

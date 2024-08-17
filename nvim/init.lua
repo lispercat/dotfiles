@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd({
   nested = true,
 })
 vim.api.nvim_set_keymap("i", "jj", "<Esc>", { noremap = true })
--- vim.opt.fileformat = "unix"
+vim.opt.fileformat = "unix"
 vim.opt.ignorecase = true
 vim.api.nvim_create_autocmd("VimEnter", {
   desc = "Auto select virtualenv Nvim open",
