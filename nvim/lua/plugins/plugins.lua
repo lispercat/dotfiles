@@ -140,9 +140,21 @@ return {
       },
     },
   },
-  { "ojroques/nvim-osc52" },
   {
     "numToStr/Comment.nvim",
     opts = {},
   },
+  {
+    "gbprod/substitute.nvim",
+    opts = {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+    }
+  }
+  -- {
+  --   'dccsillag/magma-nvim',
+  --   build = ':UpdateRemotePlugins',
+  --   lazy = false,  -- or true, depending on when you want the plugin to load
+  -- }
 }

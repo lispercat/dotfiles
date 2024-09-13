@@ -40,6 +40,9 @@
 ### Optionally will install go languages
 * Once go language is installed open nvim and run ":MasonInstall gopls" command so that mason will install gopls language server
 
+### Useful commands:
+* Kill nvim: `ps -fax | grep '[n]vim' | head -n 1 | awk '{print $1}' | xargs kill`
+
 
 
 

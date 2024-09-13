@@ -8,6 +8,22 @@ vim.opt.tabstop = 2 -- Number of spaces tabs count for
 vim.opt.shiftwidth = 2 -- Number of spaces to use for each step of (auto)indent
 vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.smartindent = true -- Enable smart indentation
+-- Autocmd for C# files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cs",
+  callback = function()
+    vim.opt.tabstop = 4 -- Set tabstop to 4 for C# files
+    vim.opt.shiftwidth = 4 -- Set shiftwidth to 4 for C# files
+  end,
+})
+-- Autocmd for Python files
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "python",
+  callback = function()
+    vim.opt.tabstop = 2
+    vim.opt.shiftwidth = 2
+  end,
+})
 
 vim.cmd("set modifiable")
 --Write file to disk upon change
@@ -37,14 +53,14 @@ vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
 })
 
-vim.api.nvim_create_autocmd("TextYankPost", {
-  callback = function()
-    if vim.v.event.operator == "y" then
-      local content = vim.fn.getreg('"')
-      require("osc52").copy(content)
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd("TextYankPost", {
+--   callback = function()
+--     if vim.v.event.operator == "y" then
+--       local content = vim.fn.getreg('"')
+--       require("osc52").copy(content)
+--     end
+--   end,
+-- })
 
 local function is_dap_server_running(port)
   local handle = io.popen("nc -zv 127.0.0.1 " .. port .. " 2>&1")
@@ -94,3 +110,8 @@ end
 -- Key mapping to call the conditional function
 vim.api.nvim_set_keymap('n', '<F5>', '<Cmd>lua Conditional_dap_continue()<CR>', { noremap = true, silent = true, desc = 'Conditional DAP Continue' })
 vim.api.nvim_set_keymap('n', '<F6>', "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", { noremap = true, silent = true })
+
+vim.keymap.set("n", "s", require('substitute').operator, { noremap = true })
+vim.keymap.set("n", "ss", require('substitute').line, { noremap = true })
+vim.keymap.set("n", "S", require('substitute').eol, { noremap = true })
+vim.keymap.set("x", "s", require('substitute').visual, { noremap = true })

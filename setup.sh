@@ -112,6 +112,12 @@ install_lazygit() {
   rm lazygit
   echo "lazygit has been installed."
 }
+# Function to check if a Nerd Font is installed
+is_nerd_font_installed() {
+    fc-list | grep -i "nerd" &> /dev/null
+    return $?
+}
+
 
 ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/nvim ~/.config/
@@ -129,6 +135,33 @@ read -p "Do you want to install lazygit? (yes/no): " answer
 echo
 if [[ $answer =~ ^[Yy](es)?$ ]]; then
   check_lazygit_installed || install_lazygit
+fi
+
+# Prompt the user if Nerd Fonts are not installed
+if is_nerd_font_installed; then
+  echo "Nerd Fonts are already installed on your system."
+else
+  read -p "Nerd Fonts are not installed. Do you want to install them? (yes/no): " answer
+  if [[ $answer =~ ^[Yy](es)?$ ]]; then
+    echo "Installing Nerd Fonts..."
+      # Create a temporary directory
+      temp_dir=$(mktemp -d)
+      cd "$temp_dir"
+
+      # Download and install Nerd Fonts
+      wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.zip
+      unzip Hack.zip -d ~/.local/share/fonts
+
+      # Refresh font cache
+      fc-cache -fv
+
+      # Clean up
+      rm -rf "$temp_dir"
+
+      echo "Nerd Fonts installed successfully."
+    else
+      echo "Nerd Fonts installation skipped."
+  fi
 fi
 
 #Install nvm and NodeJs and refresh neovim packages

@@ -2,7 +2,6 @@ return {
   {
     'mfussenegger/nvim-dap',
     version = '*',
-    event = 'VeryLazy',
     config = function()
       local dap = require('dap')
       local dapui = require('dapui')
@@ -17,6 +16,7 @@ return {
       -- Define the configuration for C# debugging
       dap.configurations.cs = {
         {
+          justMyCode = false,
           type = 'netcoredbg',
           name = 'launch - netcoredbg',
           request = 'launch',
@@ -102,15 +102,15 @@ return {
 
       -- Define a helper function to manage key mappings
       local function set_debug_keymaps()
-        vim.api.nvim_set_keymap('n', 'h', '<Cmd>lua require\'dap\'.step_into()<CR>', { noremap = true, silent = true })
-        vim.api.nvim_set_keymap('n', 'j', '<Cmd>lua require\'dap\'.step_over()<CR>', { noremap = true, silent = true })
-        vim.api.nvim_set_keymap('n', 'k', '<Cmd>lua require\'dap\'.step_out()<CR>', { noremap = true, silent = true })
-        vim.api.nvim_set_keymap('n', 'l', '<Cmd>lua require\'dap\'.continue()<CR>', { noremap = true, silent = true })
+        -- vim.api.nvim_set_keymap('n', 'h', '<Cmd>lua require\'dap\'.step_into()<CR>', { noremap = true, silent = true })
+        -- vim.api.nvim_set_keymap('n', 'j', '<Cmd>lua require\'dap\'.step_over()<CR>', { noremap = true, silent = true })
+        -- vim.api.nvim_set_keymap('n', 'k', '<Cmd>lua require\'dap\'.step_out()<CR>', { noremap = true, silent = true })
+        -- vim.api.nvim_set_keymap('n', 'l', '<Cmd>lua require\'dap\'.continue()<CR>', { noremap = true, silent = true })
         -- Map arrow keys for DAP commands
-        -- vim.api.nvim_set_keymap('n', '<Left>', '<Cmd>lua require\'dap\'.step_into()<CR>', { noremap = true, silent = true, desc = 'Step into' })
-        -- vim.api.nvim_set_keymap('n', '<Down>', '<Cmd>lua require\'dap\'.step_over()<CR>', { noremap = true, silent = true, desc = 'Step over' })
-        -- vim.api.nvim_set_keymap('n', '<Up>', '<Cmd>lua require\'dap\'.step_out()<CR>', { noremap = true, silent = true, desc = 'Step out' })
-        -- vim.api.nvim_set_keymap('n', '<Right>', '<Cmd>lua Conditional_dap_continue()<CR>', { noremap = true, silent = true, desc = 'Continue' })
+        vim.api.nvim_set_keymap('n', '<Left>', '<Cmd>lua require\'dap\'.step_into()<CR>', { noremap = true, silent = true, desc = 'Step into' })
+        vim.api.nvim_set_keymap('n', '<Down>', '<Cmd>lua require\'dap\'.step_over()<CR>', { noremap = true, silent = true, desc = 'Step over' })
+        vim.api.nvim_set_keymap('n', '<Up>', '<Cmd>lua require\'dap\'.step_out()<CR>', { noremap = true, silent = true, desc = 'Step out' })
+        vim.api.nvim_set_keymap('n', '<Right>', '<Cmd>lua Conditional_dap_continue()<CR>', { noremap = true, silent = true, desc = 'Continue' })
 
       end
 
@@ -172,50 +172,23 @@ return {
   },
   {
     'rcarriga/nvim-dap-ui',
+    dependencies = { "nvim-neotest/nvim-nio" },
+    opts = { floating = { border = "rounded" } },
     version = '*',
-    event = 'VeryLazy',
-    config = function()
-      local dap = require('dap')
-      local dapui = require('dapui')
-
-      dapui.setup({
-        icons = { expanded = "▾", collapsed = "▸", current_frame = "*" },
-        mappings = {},
-        expand_lines = vim.fn.has("nvim-0.9"),
-        layouts = {
-          {
-            elements = {
-              { id = "scopes", size = 0.25 },
-              { id = "breakpoints", size = 0.25 },
-              { id = "stacks", size = 0.25 },
-              { id = "watches", size = 0.25 },
-            },
-            size = 40,
-            position = "right",
-          },
-          {
-            elements = {
-              { id = "repl", size = 1 },
-            },
-            size = 10,
-            position = "bottom",
-          },
-        },
-      })
-
-      -- Automatically open dap-ui when a debug session starts
-      dap.listeners.after.event_initialized['dapui_config'] = function()
+    config = function(_, opts)
+      local dap, dapui = require("dap"), require("dapui")
+      dap.listeners.after.event_initialized["dapui_config"] = function(
+      )
         dapui.open()
       end
-
-      -- Automatically close dap-ui when the debug session ends
-      dap.listeners.before.event_terminated['dapui_config'] = function()
+      dap.listeners.before.event_terminated["dapui_config"] = function(
+      )
         dapui.close()
       end
-
-      dap.listeners.before.event_exited['dapui_config'] = function()
+      dap.listeners.before.event_exited["dapui_config"] = function()
         dapui.close()
       end
+      dapui.setup(opts)
     end,
   }
 }
