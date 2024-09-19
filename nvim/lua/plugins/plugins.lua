@@ -2,6 +2,19 @@ return {
   { "mhinz/vim-startify" },
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   {
+    "neovim/nvim-lspconfig",
+    ---@class PluginLspOpts
+    opts = {
+      ---@type lspconfig.options
+      servers = {
+        -- pyright will be automatically installed with mason and loaded with lspconfig
+        pyright = {},
+        gopls = {},
+        omnisharp = {},
+      },
+    },
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     event = { "BufReadPre", "BufNewFile" },
