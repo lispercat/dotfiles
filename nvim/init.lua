@@ -53,15 +53,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
 })
 
--- vim.api.nvim_create_autocmd("TextYankPost", {
---   callback = function()
---     if vim.v.event.operator == "y" then
---       local content = vim.fn.getreg('"')
---       require("osc52").copy(content)
---     end
---   end,
--- })
-
 local function is_dap_server_running(port)
   local handle = io.popen("nc -zv 127.0.0.1 " .. port .. " 2>&1")
   local result = handle:read("*a")
