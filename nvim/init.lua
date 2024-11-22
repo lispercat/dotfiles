@@ -8,6 +8,9 @@ vim.opt.tabstop = 2 -- Number of spaces tabs count for
 vim.opt.shiftwidth = 2 -- Number of spaces to use for each step of (auto)indent
 vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.smartindent = true -- Enable smart indentation
+vim.opt.wrap = true
+vim.opt.linebreak = true
+
 -- Autocmd for C# files
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "cs",
