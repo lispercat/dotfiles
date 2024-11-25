@@ -1,10 +1,18 @@
 return {
   {
     'mfussenegger/nvim-dap',
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
+      "nvim-neotest/nvim-nio",
+      "williamboman/mason.nvim",
+    },
     version = '*',
     config = function()
       local dap = require('dap')
       local dapui = require('dapui')
+      require("nvim-dap-virtual-text").setup({})
+
 
       -- Define the adapter configuration for netcoredbg
       dap.adapters.netcoredbg  = {
@@ -102,16 +110,14 @@ return {
 
       -- Define a helper function to manage key mappings
       local function set_debug_keymaps()
-        -- vim.api.nvim_set_keymap('n', 'h', '<Cmd>lua require\'dap\'.step_into()<CR>', { noremap = true, silent = true })
-        -- vim.api.nvim_set_keymap('n', 'j', '<Cmd>lua require\'dap\'.step_over()<CR>', { noremap = true, silent = true })
-        -- vim.api.nvim_set_keymap('n', 'k', '<Cmd>lua require\'dap\'.step_out()<CR>', { noremap = true, silent = true })
-        -- vim.api.nvim_set_keymap('n', 'l', '<Cmd>lua require\'dap\'.continue()<CR>', { noremap = true, silent = true })
         -- Map arrow keys for DAP commands
         vim.api.nvim_set_keymap('n', '<Left>', '<Cmd>lua require\'dap\'.step_into()<CR>', { noremap = true, silent = true, desc = 'Step into' })
         vim.api.nvim_set_keymap('n', '<Down>', '<Cmd>lua require\'dap\'.step_over()<CR>', { noremap = true, silent = true, desc = 'Step over' })
         vim.api.nvim_set_keymap('n', '<Up>', '<Cmd>lua require\'dap\'.step_out()<CR>', { noremap = true, silent = true, desc = 'Step out' })
         vim.api.nvim_set_keymap('n', '<Right>', '<Cmd>lua Conditional_dap_continue()<CR>', { noremap = true, silent = true, desc = 'Continue' })
-
+        vim.keymap.set("n", "<space>?", function()
+          require("dapui").eval(nil, { enter = true })
+        end)
       end
 
       local function remove_debug_keymaps()
@@ -169,27 +175,5 @@ return {
         }
       }
     end,
-  },
-  {
-    'rcarriga/nvim-dap-ui',
-    dependencies = { "nvim-neotest/nvim-nio" },
-    opts = { floating = { border = "rounded" } },
-    version = '*',
-    config = function(_, opts)
-      local dap, dapui = require("dap"), require("dapui")
-      dap.listeners.after.event_initialized["dapui_config"] = function(
-      )
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function(
-      )
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
-      dapui.setup(opts)
-    end,
   }
 }
-
