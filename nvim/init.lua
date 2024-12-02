@@ -10,6 +10,7 @@ vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.smartindent = true -- Enable smart indentation
 vim.opt.wrap = true
 vim.opt.linebreak = true
+vim.opt.jumpoptions:append("stack")
 
 -- Autocmd for C# files
 vim.api.nvim_create_autocmd("FileType", {
