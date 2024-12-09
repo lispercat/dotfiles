@@ -11,6 +11,7 @@ return {
         pyright = {},
         gopls = {},
         omnisharp = {},
+        ts_ls = {},
       },
     },
   },
