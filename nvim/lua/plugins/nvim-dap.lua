@@ -11,9 +11,15 @@ return {
     config = function()
       local dap = require('dap')
       local dapui = require('dapui')
+
       require("nvim-dap-virtual-text").setup({})
-
-
+        local function get_last_path_file()
+            local project_folder = vim.fn.getcwd()
+            local data_path = vim.fn.stdpath('data')
+            local project_dir = data_path .. '/dap_last_dll_paths/' .. vim.fn.fnamemodify(project_folder, ":p:h:t")
+            vim.fn.mkdir(project_dir, "p")
+            return project_dir .. '/.last_dll_path.txt'
+        end
       -- Define the adapter configuration for netcoredbg
       dap.adapters.netcoredbg  = {
         type = 'executable',
@@ -29,47 +35,20 @@ return {
           name = 'launch - netcoredbg',
           request = 'launch',
           program = function()
-            local current_file_dir = vim.fn.fnamemodify(vim.fn.expand('%:p'), ':h')
-
-            local function find_dll_files(dir)
-              local dll_files = {}
-              local handle = vim.loop.fs_scandir(dir)
-              if handle then
-                while true do
-                  local name, type = vim.loop.fs_scandir_next(handle)
-                  if not name then break end
-                  local full_path = dir .. '/' .. name
-                  if type == 'directory' then
-                    local found_files = find_dll_files(full_path)
-                    for _, file in ipairs(found_files) do
-                      table.insert(dll_files, file)
-                    end
-                  elseif type == 'file' and name:match("%.dll$") and full_path:match("/bin/") then
-                    table.insert(dll_files, full_path)
-                  end
-                end
-              end
-              return dll_files
+            local last_path_file = get_last_path_file()
+            local last_path = ""
+            if vim.fn.filereadable(last_path_file) == 1 then
+              last_path = vim.fn.readfile(last_path_file)[1] or ""
             end
+            local file_path = vim.fn.input("Enter path to .exe or .dll: ", last_path)
 
-            local dll_files = find_dll_files(current_file_dir)
-
-            local dll_file
-            if #dll_files == 0 then
-              dll_file = vim.fn.input('Path to dll: ', '', 'file')
+            if file_path and file_path ~= "" then
+                vim.fn.writefile({file_path}, last_path_file)
+                return file_path
             else
-              if #dll_files == 1 then
-                dll_file = dll_files[1]
-              else
-                print("Multiple .dll files found:")
-                for i, file in ipairs(dll_files) do
-                  print(i .. ": " .. file)
-                end
-                local choice = tonumber(vim.fn.input('Select the dll file number: '))
-                dll_file = dll_files[choice]
-              end
+                print("Invalid path. Debugging aborted.")
+                return nil
             end
-            return vim.fn.input('Path to dll', dll_file, 'file')
           end,
         },
       }

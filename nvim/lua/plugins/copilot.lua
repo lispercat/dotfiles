@@ -73,5 +73,33 @@ return {
         })
       end,
     },
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",  -- LSP completion source
+    },
+    config = function()
+      -- Import nvim-cmp
+      local cmp = require("cmp")
+
+      -- Set up nvim-cmp
+      cmp.setup({
+        snippet = {
+          expand = function(args)
+            -- You can replace this with your snippet engine (e.g., LuaSnip)
+            -- For now, we'll keep it empty if not using snippets
+          end,
+        },
+        mapping = {
+          ['<C-Space>'] = cmp.mapping.complete(),  -- Trigger completion
+          ['<CR>'] = cmp.mapping.confirm({ select = true }),  -- Confirm selection
+        },
+        sources = {
+          { name = "nvim_lsp" },  -- LSP completions
+        },
+      })
+    end
   }
 }
+
