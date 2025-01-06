@@ -10,9 +10,9 @@ return {
         -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
         gopls = {},
-        -- omnisharp = {},
+        omnisharp = {},
         ts_ls = {},
-        csharp_ls = {},
+        -- csharp_ls = {},
       },
     },
   },
@@ -122,5 +122,44 @@ return {
       vim.keymap.set({ "x", "n" }, "gy", "<Plug>(YADefault)", { silent = true })
       vim.keymap.set({ "x", "n" }, "<leader>y", "<Plug>(YANoMove)", { silent = true })
     end,
+  },
+  {
+    "ysmb-wtsg/in-and-out.nvim",
+    keys = {
+      {
+        "<C-l>",
+        function()
+          require("in-and-out").in_and_out()
+        end,
+        mode = "i",
+      },
+    },
+  },
+  {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local harpoon = require("harpoon")
+      harpoon.setup()
+      vim.keymap.set("n", "<leader>a", function()
+        harpoon:list():add()
+      end)
+      vim.api.nvim_set_keymap("n", "<Leader>h", "<Cmd>Telescope harpoon marks<CR>", { noremap = true, silent = true })
+      vim.keymap.set("n", "<leader>hq", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+    end,
+  },
+  {
+    "leath-dub/snipe.nvim",
+    keys = {
+      {
+        "<leader>hs",
+        function()
+          require("snipe").open_buffer_menu()
+        end,
+        desc = "Open Snipe buffer menu",
+      },
+    },
+    opts = {},
   },
 }
