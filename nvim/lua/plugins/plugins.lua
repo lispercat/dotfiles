@@ -12,6 +12,7 @@ return {
         gopls = {},
         omnisharp = {},
         ts_ls = {},
+        lua_ls = {},
         -- csharp_ls = {},
       },
     },
@@ -67,7 +68,7 @@ return {
       "mfussenegger/nvim-dap-python", --optional
       { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
     },
-    lazy = false,
+    event = 'VeryLazy',
     branch = "regexp", -- This is the regexp branch, use this for the new version
     config = function()
       require("venv-selector").setup()
@@ -163,4 +164,5 @@ return {
     },
     opts = {},
   },
+  { "Olical/nfnl", ft = "fennel" }
 }

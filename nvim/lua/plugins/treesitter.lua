@@ -28,6 +28,7 @@ return {
         "bash",
         "lua",
         "c_sharp",
+        "python"
       },
       incremental_selection = {
         enable = true,
