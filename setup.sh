@@ -118,9 +118,8 @@ is_nerd_font_installed() {
     return $?
 }
 
-
 ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
-ln -sf ~/dotfiles/nvim ~/.config/
+ln -sf ~/dotfiles/nvim ~/.config/ #since vim.fn.stdpath("config") is mapped to /home/user/.config/nvim we link out git repo to ~/.config/
 ln -sf ~/dotfiles/lf ~/.config/
 
 read -p "Do you want to clobber all nvim lazy local libraries (for complete refresh)? (yes/no): " answer
