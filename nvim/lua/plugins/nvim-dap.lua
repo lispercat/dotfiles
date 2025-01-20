@@ -76,6 +76,56 @@ return {
         },
       }
 
+      -- Add Python debugging configuration
+      dap.adapters.python = {
+        type = 'executable',
+        command = 'python',
+        args = { '-m', 'debugpy.adapter' },
+      }
+
+      dap.configurations.python = {
+        {
+          type = 'python',
+          request = 'launch',
+          name = "Launch file",
+          program = "${file}", -- This configuration will launch the current file if used.
+          pythonPath = function()
+            local venv_path = os.getenv('VIRTUAL_ENV')
+            if venv_path then
+              return venv_path .. '/bin/python'
+            else
+              return '/usr/bin/python' -- Update this to your Python path if needed
+            end
+          end,
+        },
+      }
+
+      function Conditional_dap_continue()
+        local filetype = vim.bo.filetype
+        if filetype == "cs" then
+          require("dap").continue()
+        elseif filetype == "lua" then
+          if not is_dap_server_running(8086) then
+            print("launching the OSV server for lua")
+            require("osv").launch({ port = 8086, blocking = true })
+          else
+            print("OSV server is running")
+            require("dap").continue()
+          end
+        elseif filetype == "python" then
+          require("dap").continue()
+        else
+          print("Unsupported file type for debugging: " .. filetype)
+        end
+      end
+
+      function is_dap_server_running(port)
+        local handle = io.popen("nc -zv 127.0.0.1 " .. port .. " 2>&1")
+        local result = handle:read("*a")
+        handle:close()
+        return result:find("succeeded") ~= nil
+      end
+
       -- Optional: Configure dap-ui
       dapui.setup()
       print("DAP UI setup complete")
@@ -86,6 +136,10 @@ return {
       vim.api.nvim_set_keymap('n', '<Leader>lp', '<Cmd>lua require\'dap\'.list_breakpoints()<CR>', { noremap = true, silent = true, desc = 'List breakpoints' })
       vim.api.nvim_set_keymap('n', '<Leader>dr', '<Cmd>lua require\'dap\'.repl.open()<CR>', { noremap = true, silent = true, desc = 'Open REPL' })
       vim.api.nvim_set_keymap('n', '<Leader>dl', '<Cmd>lua require\'dap\'.run_last()<CR>', { noremap = true, silent = true, desc = 'Run last debug session' })
+
+      -- Key mappings for starting and stopping debug sessions
+      vim.api.nvim_set_keymap("n", "<F5>", "<Cmd>lua Conditional_dap_continue()<CR>", { noremap = true, silent = true, desc = "Conditional DAP Continue" })
+      vim.api.nvim_set_keymap("n", "<F6>", "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", { noremap = true, silent = true })
 
       -- Define a helper function to manage key mappings
       local function set_debug_keymaps()

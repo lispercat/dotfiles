@@ -66,46 +66,6 @@ local function is_dap_server_running(port)
 end
 
 -- Function to conditionally run DAP based on file type
-function Conditional_dap_continue()
-  local filetype = vim.bo.filetype
-  if filetype == "cs" then
-    require("dap").continue()
-  elseif filetype == "lua" then
-    -- require('osv').launch({ port = 8086, blocking=true })
-    -- require('dap').continue()
-    -- Will run a lua file and if you have defined a fuction there and call it from the file the funcion will get executed
-    -- require('osv').run_this()
-
-    --[[
-    1. Open a Neovim instance (instance A)
-    2. Launch the DAP server with (A) >
-     :lua require"osv".launch({port=8086})
-    3. Open another Neovim instance (instance B)
-    4. Open `myscript.lua` (B)
-    5. Place a breakpoint on line 2 using (B) >
-      :lua require"dap".toggle_breakpoint()
-    6. Connect the DAP client using (B) >
-      :lua require"dap".continue()
-    7. Run `myscript.lua` in the other instance (A) >
-      :luafile myscript.lua
-    8. The breakpoint should hit and freeze the instance (B)
-    ]]
-
-    if not is_dap_server_running(8086) then
-      print("launching the OSV server for lua")
-      require("osv").launch({ port = 8086, blocking = true })
-    else
-      print("OSV server is running")
-      require("dap").continue()
-    end
-  else
-    print("Unsupported file type for debugging: " .. filetype)
-  end
-end
-
--- Key mapping to call the conditional function
-vim.api.nvim_set_keymap("n", "<F5>", "<Cmd>lua Conditional_dap_continue()<CR>", { noremap = true, silent = true, desc = "Conditional DAP Continue" })
-vim.api.nvim_set_keymap("n", "<F6>", "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("n", "s", require("substitute").operator, { noremap = true })
 vim.keymap.set("n", "ss", require("substitute").line, { noremap = true })
