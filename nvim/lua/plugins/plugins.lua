@@ -165,4 +165,5 @@ return {
     opts = {},
   },
   { "Olical/nfnl", ft = "fennel" },
+  { "junegunn/vim-easy-align" },
 }
