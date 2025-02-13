@@ -2,18 +2,24 @@ return {
   { "mhinz/vim-startify" },
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   {
+    -- After opening a #c file for the first time install roslyn by running :MasonInstall roslyn
+    -- Also if something goes wrong, check :LspLogs for more information, I found that I had to increase fs.inotify.max_user_instances to 8192
+    -- Syntax highlighting is handled not by treesitter but by the roslyn server
+    "seblyng/roslyn.nvim",
+    ft = "cs",
+    opts = {
+    },
+  },
+  {
     "neovim/nvim-lspconfig",
     ---@class PluginLspOpts
     opts = {
       ---@type lspconfig.options
       servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
         pyright = {},
         gopls = {},
-        omnisharp = {},
         ts_ls = {},
         lua_ls = {},
-        -- csharp_ls = {},
       },
     },
   },

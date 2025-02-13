@@ -30,6 +30,9 @@ return {
         "c_sharp",
         "python"
       },
+      highlight = {
+        enable = true, -- enable syntax highlighting
+      },
       incremental_selection = {
         enable = true,
         keymaps = {
