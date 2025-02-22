@@ -19,6 +19,8 @@ return {
         gopls = {},
         ts_ls = {},
         lua_ls = {},
+        helm_ls = {},
+        yamlls = {},
       },
     },
   },
@@ -175,4 +177,5 @@ return {
   },
   { "Olical/nfnl", ft = "fennel" },
   { "junegunn/vim-easy-align" },
+  { "towolf/vim-helm", ft = "helm" },
 }

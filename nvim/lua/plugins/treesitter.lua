@@ -28,7 +28,9 @@ return {
         "bash",
         "lua",
         "c_sharp",
-        "python"
+        "python",
+        "http",
+        "helm"
       },
       highlight = {
         enable = true, -- enable syntax highlighting
@@ -42,6 +44,11 @@ return {
           node_decremental = "<bs>",
         },
       },
+      -- add the missing fields
+      modules = {},
+      sync_install = false,
+      ignore_install = {},
+      auto_install = true,
     })
   end,
 }
