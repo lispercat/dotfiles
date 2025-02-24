@@ -18,16 +18,14 @@ return {
       debug = true,
     },
     config = function()
-      require("CopilotChat").setup({})
-
-      -- Add autocommand to disable <C-l> in CopilotChat buffer
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "copilot-chat",
-        callback = function()
-          vim.defer_fn(function()
-            vim.api.nvim_buf_set_keymap(0, "n", "<C-l>", "<Nop>", { noremap = true, silent = true })
-          end, 100) -- Delay by 100ms to ensure plugin setup is complete
-        end,
+      require("CopilotChat").setup({
+        mappings = {
+          -- Disable Ctrl-l from resetting the chat
+          reset = {
+            normal = '',
+            insert = '',
+          },
+        },
       })
     end,
   },
