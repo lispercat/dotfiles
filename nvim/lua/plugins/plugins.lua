@@ -66,6 +66,29 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-treesitter/nvim-treesitter-textobjects",
     },
+    config = function()
+      vim.g["conjure#log#fold#enabled"] = true
+      vim.g["conjure#log#wrap"] = true
+      vim.g["conjure#highlight#enabled"] = true
+      vim.g["conjure#client#python#stdio#prompt_pattern"] = ">>> "
+
+      -- vim.g["conjure#log#diagnostics"] = true
+      -- vim.g["conjure#debug"] = true
+    end,
+  },
+  {
+    "jpalardy/vim-slime",
+    keys = {
+      { "<leader>rc", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
+      { "<leader>rr", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
+    },
+    config = function()
+      vim.g.slime_target = "wezterm"
+      vim.g.slime_default_config = { socket_name = "default", target_pane_id = "{1}" }
+      vim.g.slime_input_pid = 1
+      vim.g.slime_cell_delimiter = "# %%"
+      vim.g.slime_bracketed_paste = 1
+    end,
   },
   {
     "linux-cultist/venv-selector.nvim",
@@ -176,4 +199,34 @@ return {
   { "Olical/nfnl", ft = "fennel" },
   { "junegunn/vim-easy-align" },
   { "towolf/vim-helm", ft = "helm" },
+  -- {
+  --   -- Install "pip install jupytext" to use this plugin
+  --   "GCBallesteros/jupytext.nvim",
+  --   config = true,
+  -- },
+  {
+    -- Install "pip install jupytext" to use this plugin
+    "goerz/jupytext.nvim",
+    version = "0.2.0",
+    opts = {}, -- see Options
+  },
+  -- {
+  --   "VPavliashvili/json-nvim",
+  --   ft = "json", -- only load for json filetype
+  --   -- config = function()
+  --   --   require("json-nvim").setup({
+  --   --     format_on_save = false,
+  --   --     format_on_write = false,
+  --   --   })
+  --   -- end,
+  -- },
+  {
+    "folke/snacks.nvim",
+    opts = {
+      bigfile = {
+        size = 100 * 1024 * 1024, -- 100MB
+        line_length = 10000000,
+      },
+    },
+  },
 }
