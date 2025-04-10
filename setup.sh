@@ -123,6 +123,7 @@ ln -sf ~/dotfiles/nvim ~/.config/ #since vim.fn.stdpath("config") is mapped to /
 ln -sf ~/dotfiles/lf ~/.config/
 ln -sf ~/dotfiles/wezterm ~/.config/
 
+
 read -p "Do you want to clobber all nvim lazy local libraries (for complete refresh)? (yes/no): " answer
 if [[ $answer =~ ^[Yy](es)?$ ]]; then
   rm -rf ~/.local/share/nvim
