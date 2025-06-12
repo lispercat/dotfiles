@@ -60,36 +60,36 @@ return {
       })
     end,
   },
-  {
-    "Olical/conjure",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
-    config = function()
-      vim.g["conjure#log#fold#enabled"] = true
-      vim.g["conjure#log#wrap"] = true
-      vim.g["conjure#highlight#enabled"] = true
-      vim.g["conjure#client#python#stdio#prompt_pattern"] = ">>> "
-
-      -- vim.g["conjure#log#diagnostics"] = true
-      -- vim.g["conjure#debug"] = true
-    end,
-  },
-  {
-    "jpalardy/vim-slime",
-    keys = {
-      { "<leader>rc", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
-      { "<leader>rr", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
-    },
-    config = function()
-      vim.g.slime_target = "wezterm"
-      vim.g.slime_default_config = { socket_name = "default", target_pane_id = "{1}" }
-      vim.g.slime_input_pid = 1
-      vim.g.slime_cell_delimiter = "# %%"
-      vim.g.slime_bracketed_paste = 1
-    end,
-  },
+  -- {
+  --   "Olical/conjure",
+  --   dependencies = {
+  --     "nvim-treesitter/nvim-treesitter",
+  --     "nvim-treesitter/nvim-treesitter-textobjects",
+  --   },
+  --   config = function()
+  --     vim.g["conjure#log#fold#enabled"] = true
+  --     vim.g["conjure#log#wrap"] = true
+  --     vim.g["conjure#highlight#enabled"] = true
+  --     vim.g["conjure#client#python#stdio#prompt_pattern"] = ">>> "
+  --
+  --     -- vim.g["conjure#log#diagnostics"] = true
+  --     -- vim.g["conjure#debug"] = true
+  --   end,
+  -- },
+  -- {
+  --   "jpalardy/vim-slime",
+  --   keys = {
+  --     { "<leader>rc", "<cmd>SlimeConfig<cr>", desc = "Slime Config" },
+  --     { "<leader>rr", "<Plug>SlimeSendCell<BAR>/^# %%<CR>", desc = "Slime Send Cell" },
+  --   },
+  --   config = function()
+  --     vim.g.slime_target = "wezterm"
+  --     vim.g.slime_default_config = { socket_name = "default", target_pane_id = "{1}" }
+  --     vim.g.slime_input_pid = 1
+  --     vim.g.slime_cell_delimiter = "# %%"
+  --     vim.g.slime_bracketed_paste = 1
+  --   end,
+  -- },
   {
     "linux-cultist/venv-selector.nvim",
     dependencies = {
@@ -210,16 +210,6 @@ return {
     version = "0.2.0",
     opts = {}, -- see Options
   },
-  -- {
-  --   "VPavliashvili/json-nvim",
-  --   ft = "json", -- only load for json filetype
-  --   -- config = function()
-  --   --   require("json-nvim").setup({
-  --   --     format_on_save = false,
-  --   --     format_on_write = false,
-  --   --   })
-  --   -- end,
-  -- },
   {
     "folke/snacks.nvim",
     opts = {
@@ -228,5 +218,55 @@ return {
         line_length = 10000000,
       },
     },
+  },
+
+  {
+    "hkupty/iron.nvim",
+    config = function()
+      local iron = require("iron.core")
+      local view = require("iron.view")
+      local common = require("iron.fts.common")
+
+      iron.setup({
+        config = {
+          preferred = "bash",
+          repl_open_cmd = "vnew",
+          repl_definition = {
+            sh = {
+              command = { "bash" },
+            },
+            python = {
+              command = { "python3" }, -- or { "ipython", "--no-autoindent" }
+              format = common.bracketed_paste_python,
+              block_dividers = { "# %%", "#%%" },
+            },
+            javascript = {
+              command = { "node" },
+              format = common.bracketed_paste_python,
+            },
+          },
+        },
+        keymaps = {
+          send_motion = "<localleader>sc",
+          visual_send = "<localleader>sc",
+          send_file = "<localleader>sf",
+          send_line = "<localleader>sl",
+          send_code_block = "<localleader>sb",
+          send_mark = "<localleader>sm",
+          mark_motion = "<localleader>mc",
+          mark_visual = "<localleader>mc",
+          remove_mark = "<localleader>md",
+          cr = "<localleader>s<cr>",
+          interrupt = "<localleader>s<localleader>",
+          exit = "<localleader>sq",
+          clear = "<localleader>cl",
+        },
+      })
+
+      vim.keymap.set("n", "<localleader>rs", "<cmd>IronRepl<cr>")
+      vim.keymap.set("n", "<localleader>rr", "<cmd>IronRestart<cr>")
+      vim.keymap.set("n", "<localleader>rf", "<cmd>IronFocus<cr>")
+      vim.keymap.set("n", "<localleader>rh", "<cmd>IronHide<cr>")
+    end,
   },
 }

@@ -11,6 +11,7 @@ return {
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
+      dap.set_log_level("TRACE")
 
       require("nvim-dap-virtual-text").setup({})
       local function get_last_path_file()
@@ -29,6 +30,7 @@ return {
       -- Define the configuration for C# debugging
       dap.configurations.cs = {
         {
+          -- Launch configuration
           justMyCode = false,
           type = "netcoredbg",
           name = "launch - netcoredbg",
@@ -46,9 +48,46 @@ return {
               return file_path
             else
               error("Invalid path. Debugging aborted.")
-              -- print("Invalid path. Debugging aborted.")
-              -- return nil
             end
+          end,
+        },
+        {
+          -- Attach configuration
+          type = "netcoredbg",
+          name = "attach - netcoredbg",
+          request = "attach",
+          processId = function()
+            local lines = vim.fn.systemlist("ps -eo pid,args | grep bin/Debug | grep -v grep | grep -v sh")
+            local choices = {}
+
+            for _, line in ipairs(lines) do
+              local pid, cmd = line:match("^(%s*%d+)%s+(.+)$")
+              local cwd_output = vim.fn.system(string.format("pwdx %s", pid))
+              local cwd = cwd_output:match(": (.+)\n") or "unknown"
+              table.insert(choices, {
+                pid = pid,
+                label = string.format("%s - %s [%s]", pid, cmd, cwd),
+              })
+            end
+
+            return coroutine.create(function(coro)
+              if #choices == 0 then
+                error("No matching processes found in bin/Debug.")
+              end
+
+              vim.ui.select(choices, {
+                prompt = "Select .NET Debug process:",
+                format_item = function(item)
+                  return item.label
+                end,
+              }, function(choice)
+                if choice then
+                  coroutine.resume(coro, tonumber(choice.pid))
+                else
+                  error("No process selected")
+                end
+              end)
+            end)
           end,
         },
       }
